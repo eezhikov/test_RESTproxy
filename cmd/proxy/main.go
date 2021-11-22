@@ -15,7 +15,7 @@ import (
 
 func run(cfg *config.Config) error {
 
-	grpcServerEndpoint := fmt.Sprintf("%s:%d", cfg.Host, cfg.GrpcPort)
+	grpcServerEndpoint := fmt.Sprintf("service:%d", cfg.GrpcPort)
 
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -24,13 +24,13 @@ func run(cfg *config.Config) error {
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
-	if err := gw.RegisterTestServiceHandlerFromEndpoint(ctx, mux,  grpcServerEndpoint, opts); err != nil {
+	if err := gw.RegisterTestServiceHandlerFromEndpoint(ctx, mux, grpcServerEndpoint, opts); err != nil {
 		return err
 	}
 
-	return http.ListenAndServe(fmt.Sprintf("%s:%d", cfg.Host, cfg.RestPort), mux)
+	return http.ListenAndServe(fmt.Sprintf(":%d", cfg.RestPort), mux)
 }
-func main()  {
+func main() {
 	logger := zap.New(zapcore.NewCore(
 		zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
 		os.Stdout,
@@ -41,4 +41,3 @@ func main()  {
 		logger.Error("run error", zap.Error(err))
 	}
 }
-

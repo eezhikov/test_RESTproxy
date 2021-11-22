@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
@@ -12,11 +11,6 @@ import (
 	pb "testTask/pkg/test_service/server"
 	"testTask/pkg/test_service/service"
 )
-
-
-
-
-
 
 func main() {
 	logger := zap.New(zapcore.NewCore(
@@ -30,7 +24,7 @@ func main() {
 	srv := grpc.NewServer()
 
 	pb.RegisterTestServiceServer(srv, testService)
-	listener, err := net.Listen("tcp", fmt.Sprintf("%s:%d", cfg.Host, cfg.GrpcPort))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", cfg.GrpcPort))
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -38,12 +32,9 @@ func main() {
 
 	fmt.Println("ok")
 
-
-		if err := srv.Serve(listener); err != nil{
-			fmt.Println(err)
-			return
-		}
-
-
+	if err := srv.Serve(listener); err != nil {
+		fmt.Println(err)
+		return
+	}
 
 }

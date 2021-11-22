@@ -5,11 +5,8 @@ services:
     build:
       context: ../
       dockerfile: compose/Dockerfile_proxy
-    hostname: local
     ports:
       - "8081:8081"
-    networks:
-      - proxy
     volumes:
       - ../:/go/src/proxy
     command: [ "go", "run", "/go/src/proxy/cmd/proxy/main.go" ]
@@ -18,13 +15,6 @@ services:
     build:
       context: ../
       dockerfile: compose/Dockerfile_service
-    hostname: testsrv
-    networks:
-      - proxy
     volumes:
       - ../:/go/src/service
     command: ["go", "run", "/go/src/service/cmd/test_service/main.go"]
-
-networks:
-  proxy:
-      name: custom_network
