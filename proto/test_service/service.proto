@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "pkg/test_service/server";
+
+package test_service;
+import "google/api/annotations.proto";
+service TestService {
+  rpc ConcStrings(ConcStringsRequest) returns(ConcStringsResponse) {
+    option (google.api.http) = {
+      post: "/strings"
+      body: "*"
+    };
+  }
+}
+message ConcStringsRequest {
+  string firstStr = 1;
+  string secondStr = 2;
+}
+message ConcStringsResponse{
+  string result = 1;
+}

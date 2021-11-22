@@ -1,0 +1,3 @@
+FROM golang:latest
+WORKDIR /go/src/proxy
+EXPOSE 8081
