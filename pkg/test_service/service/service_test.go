@@ -96,15 +96,42 @@ func Test(t *testing.T) {
 		reqBody := bytes.NewReader(body)
 
 		resp, err := client.Post(url, "application/json", reqBody)
-		defer resp.Body.Close()
 		if err != nil {
 			t.Fatalf("Request error: %v", err)
 			return
 		}
+		defer resp.Body.Close()
 
-		respBody, _ := ioutil.ReadAll(resp.Body)
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(err)
+			return
+
+		}
 		if resp != nil && string(respBody) != testValue.answer {
 			t.Errorf("Test(%s), expected %s", testValue.in, string(respBody))
+		}
+	}
+}
+func BenchmarkTestService_ConcStrings(b *testing.B) {
+	strReq := &pb.ConcStringsRequest{
+		FirstStr:  "qwer",
+		SecondStr: "tyui",
+	}
+
+	for i := 0; i < b.N; i++ {
+		logger := zap.New(zapcore.NewCore(
+			zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+			os.Stdout,
+			zap.DebugLevel,
+		))
+
+		testService := service.New(logger)
+
+		ctx := context.Background()
+		_, err := testService.ConcStrings(ctx, strReq)
+		if err != nil {
+			b.Fatalf("Cant ConcStrings: %v", err)
 		}
 	}
 }
