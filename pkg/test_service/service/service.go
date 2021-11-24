@@ -22,12 +22,12 @@ func (t *TestService) ConcStrings(ctx context.Context, request *pb.ConcStringsRe
 	if request.FirstStr == "" {
 		return nil, errors.New("first string is empty")
 	}
-	t.logger.Info("Validate first string")
+	t.logger.Info("Validate first string ", zap.String("first", request.FirstStr))
 
 	if request.SecondStr == "" {
 		return nil, errors.New("second string is empty")
 	}
-	t.logger.Info("Validate second string")
+	t.logger.Info("Validate second string ", zap.String("first", request.FirstStr))
 
 	var resp pb.ConcStringsResponse
 	resp.Result = request.FirstStr + request.SecondStr

@@ -92,25 +92,30 @@ func Test(t *testing.T) {
 	}
 
 	for _, testValue := range StringsReq {
-		body, _ := json.Marshal(testValue.in)
+		body, err := json.Marshal(testValue.in)
+		if err != nil {
+			t.Fatalf("Marshal error: %v", err)
+			return
+		}
 		reqBody := bytes.NewReader(body)
 
 		resp, err := client.Post(url, "application/json", reqBody)
 		if err != nil {
 			t.Fatalf("Request error: %v", err)
-			return
 		}
-		defer resp.Body.Close()
-
+		if resp == nil {
+			t.Fatal("Nil response from REST service:")
+		}
 		respBody, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			fmt.Println(err)
 			return
 
 		}
-		if resp != nil && string(respBody) != testValue.answer {
+		if string(respBody) != testValue.answer {
 			t.Errorf("Test(%s), expected %s", testValue.in, string(respBody))
 		}
+		resp.Body.Close()
 	}
 }
 func BenchmarkTestService_ConcStrings(b *testing.B) {
