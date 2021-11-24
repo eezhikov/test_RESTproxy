@@ -30,11 +30,10 @@ func main() {
 		return
 	}
 
-	fmt.Println("ok")
+	fmt.Println("grpc server ok")
 
 	if err := srv.Serve(listener); err != nil {
 		fmt.Println(err)
 		return
 	}
-
 }

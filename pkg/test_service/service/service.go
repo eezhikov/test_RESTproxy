@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"go.uber.org/zap"
 	pb "testTask/pkg/test_service/server"
 )
@@ -18,20 +17,20 @@ func New(logger *zap.Logger) *TestService {
 		logger: logger,
 	}
 }
-func (t *TestService) ConcStrings(ctx context.Context, request *pb.ConcStringsRequest) (*pb.ConcStringsResponse, error) {
 
-	if request.FirstStr == ""{
+func (t *TestService) ConcStrings(ctx context.Context, request *pb.ConcStringsRequest) (*pb.ConcStringsResponse, error) {
+	if request.FirstStr == "" {
 		return nil, errors.New("first string is empty")
 	}
-	fmt.Println("Validate first string")
+	t.logger.Info("Validate first string")
 
-	if request.SecondStr == ""{
+	if request.SecondStr == "" {
 		return nil, errors.New("second string is empty")
 	}
-	fmt.Println("Validate second string")
+	t.logger.Info("Validate second string")
+
 	var resp pb.ConcStringsResponse
 	resp.Result = request.FirstStr + request.SecondStr
-	fmt.Println("Concatenate strings and return result")
+	t.logger.Info("Concatenate strings and return result")
 	return &resp, nil
 }
-

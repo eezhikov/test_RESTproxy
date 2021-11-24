@@ -14,7 +14,6 @@ import (
 )
 
 func run(cfg *config.Config) error {
-
 	grpcServerEndpoint := fmt.Sprintf("service:%d", cfg.GrpcPort)
 
 	ctx := context.Background()
@@ -23,11 +22,11 @@ func run(cfg *config.Config) error {
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-
 	if err := gw.RegisterTestServiceHandlerFromEndpoint(ctx, mux, grpcServerEndpoint, opts); err != nil {
 		return err
 	}
 
+	fmt.Println("rest server ok")
 	return http.ListenAndServe(fmt.Sprintf(":%d", cfg.RestPort), mux)
 }
 func main() {
