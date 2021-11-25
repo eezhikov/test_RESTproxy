@@ -10,17 +10,17 @@
 операция должна отражаться в логе STDIN
 
 Прокси
-1. Получает http-запрос в формате json, вида
-{
-“ rstStr”:”some string”,
-“secondStr”:”another string"
-}
+Получает http-запрос в формате json, вида
+        {
+            "FirstStr":"some string",
+            "secondStr":"another string"
+        }
 
-2. Отправляет полученное сообщение микросервису и получив ответ возвращает
+Отправляет полученное сообщение микросервису и получив ответ возвращает
 результат в формате json, вида
-{
-“result”:”some stringanother string”
-}
+        {
+            “result”:”some stringanother string”
+        }
 Каждая операция должна отражаться в логе на STDIN
 Готовое решение для демонстрации собрать в docker-machine.
 
